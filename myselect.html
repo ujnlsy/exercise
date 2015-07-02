@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>myselect</title>
+	<style type="text/css">
+		.selectpick_div{
+			width:200px;
+			height: 20px;
+			margin: 10px auto;
+			padding: 5px 5px 5px 10px;
+			border:1px solid #CFCFCF;
+			border-radius: 5px;
+		}
+		.selectpick_icon{
+			display: inline-block;
+			float: right;
+			width: 9px;
+			background: url(icon.png) no-repeat center;
+		}
+		.selectpick_option ul{
+			display: none;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			border:1px solid #CFCFCF;
+			border-bottom: none;
+		}
+		.selectpick_option li{
+			padding: 5px 10px;
+			border-bottom:1px solid #CFCFCF;
+			background-color: #fff;
+		}
+		li.selected{
+			background-color: #E05865;
+		}
+		li:hover{
+			background-color: #E05865;
+		}
+	</style>
+</head>
+<body>
+	<div class="selectpick1">
+		<div class="selectpick_div">
+			<span class="selectpick_span">a</span>
+			<i class="selectpick_icon"></i>
+		</div>
+		<div class="selectpick_option">
+			<ul class="selectpick_ul">
+				<li class="selected">selectitem1</li>
+				<li>selectitem2</li>
+				<li>selectitem3</li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+
+		function selectpick($el){
+			this.$el=$el;
+			this.$sel_div=$el.find('.selectpick_div');
+			this.$sel_span=$el.find('.selectpick_span');
+			this.$sel_opt=$el.find('.selectpick_option');
+			this.$sel_ul=$el.find('.selectpick_ul');
+			this.$sel_i=$el.find('i.selectpick_icon');
+			this.$sel_span.text($('.selected').text());
+			this.start_select();
+		}
+		selectpick.prototype = {
+			start_select:function (){
+				this.sel_event();
+			},
+			sel_event:function (){
+				var self = this;
+				var el_offset = this.$sel_div.offset();
+				var el_height = this.$sel_div.height();
+				var el_width = this.$sel_div.width();
+				var left = el_offset.left;
+				var top = el_offset.top + el_height + 12;
+				this.$sel_span.css({
+					"lineHeight":el_height+"px",
+				})
+				this.$sel_i.css({
+					"height":el_height+"px",
+				})
+				this.$sel_opt.css({
+					"position":"absolute",
+					"left":left,
+					"top":top,
+					"width":el_width+15,
+				});
+				this.$sel_div.click(function(){
+					self.$sel_ul.slideToggle("fast");
+					// self.$sel_div.focus();
+				})
+				this.$sel_ul.find("li").click(function(){
+					$(this).addClass("selected").siblings().removeClass("selected");
+					var li_text = $(".selected").text();
+					self.$sel_span.text(li_text);
+					self.$sel_ul.hide();
+				})
+				this.$sel_div.focusout(function(){
+					self.$sel_ul.hide();
+				})
+				// this.$sel_ul.find("li").bind({
+				// 	click:function(){
+				// 		$(this).addClass("selected").siblings().removeClass("selected");
+				// 	},
+				// 	mouseenter:function(){
+				// 		$(this).css({
+				// 			"background-color":"red",
+				// 		});
+				// 	},
+				// 	mouseleave:function(){
+				// 		if($(this).hasClass("selected")){
+				// 			$(this).css({
+				// 				"background-color":"red",
+				// 			});
+				// 		}else{
+				// 			$(this).css({
+				// 				"background-color":"white",
+				// 			});
+				// 		}
+				// 	}
+				// })
+				
+				
+				
+			}
+		}
+		var sel1 = new selectpick($(".selectpick1"));
+	</script>
+</body>
+</html>
