@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Clock</title>
+	<style type="text/css">
+		*{margin: 0;padding:0;}
+		.clock{
+			position: relative;
+			width: 600px;
+			height: 600px;
+			margin: 20px auto;
+			background: url(images/clockface.jpg);
+		}
+		.clock ul{
+			list-style: none;
+			overflow: hidden;
+		}
+		.hour,.min,.sec{
+			position: absolute;
+			top:0;
+			left: 50%;
+			width: 30px;
+			height: 600px;
+			margin-left: -15px;
+
+		}
+		.hour{
+			background: url(images/hourhand.png);
+			z-index: 1;
+		}
+		.min{
+			background: url(images/minhand.png);
+			z-index: 2;
+		}
+		.sec{
+			background: url(images/sechand.png);
+			z-index: 3;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="clock">
+		<ul>
+			<li class="hour"></li>
+			<li class="min"></li>
+			<li class="sec"></li>
+		</ul>
+	</div>
+	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			setInterval(function(){
+				var sec = new Date().getSeconds();
+				var dsec = sec * 6;
+				var rsec = "rotate("+dsec+"deg)";
+				$('.sec').css({
+					"-webkit-transform":rsec,
+				});
+			},1000);
+			setInterval(function(){
+				var min = new Date().getMinutes();
+				var dmin = min * 6;
+				var rmin = "rotate("+dmin+"deg)"
+				$('.min').css({
+					"-webkit-transform":rmin,
+				});
+			},1000);
+			setInterval(function(){
+				var hour = new Date().getHours();
+				var min = new Date().getMinutes();
+				var dhour = hour * 30 + min/2;//min/60*30
+				var rhour = "rotate("+dhour+"deg)";
+				$('.hour').css({
+					"-webkit-transform":rhour,
+				});
+			},1000);
+		})
+	</script>
+</body>
+</html>
