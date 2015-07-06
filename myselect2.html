@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>myselect2</title>
+	<style type="text/css">
+		.selectpick{
+			display: table;
+			margin: 0 auto;
+		}
+		li.selected{
+			background-color: #E05865;
+		}
+		li:hover{
+			background-color: #E05865;
+		}
+	</style>
+</head>
+<body>
+<div class="selectpick" >
+	<ul class="selectpick_ul" id="select1">
+		<li>请选择</li>
+		<li value="1">selectitem2</li>
+		<li value="2">selectitem3</li>
+	</ul>
+</div>
+	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+	;
+	(function($,window,document,undefined){
+		$.fn.selectpicker = function(option){
+			var settings_config = {
+				width:150,
+				height:30,
+				selectedText:"",
+				selectDivColor:"",
+				onSelect:"",
+			};
+
+			var settings = $.extend({},settings_config,option);
+
+			return this.each(function(item_id){
+				var self = this;
+				var el_offset = $(self).offset();
+				var left = el_offset.left;
+				var top = el_offset.top;
+				var item_id = $(self).attr("id");
+				var _selectBody = "<div class='selectpick_div selectpick_div_" + item_id + "' style='background:"+settings.selectDivColor+"'><span class='selectpick_span selectpick_span_" + item_id + "' style='line-height:"+settings.height+"px;'></span><i class='selectpick_icon selectpick_icon_" + item_id + "' style='display: inline-block;float: right;width: 9px;height:"+settings.height+"px;background: url(icon.png) no-repeat center;'></i></div>"
+				$(self).before(_selectBody);
+				$('.selectpick_div_'+item_id).css({
+					"height": settings.height,
+		            "width": settings.width,
+		            "left": left,
+		            "top": top,
+		            "padding-left":"10px",
+		            "padding-right":"10px",
+		            "border":"1px solid #CFCFCF",
+		            "border-radius":"5px",
+				});
+				$(self).css({
+					"display":"none",
+					"list-style":"none",
+		            "width": settings.width+20,
+		            "margin":0,
+		            "padding":0,
+		            "border":"1px solid #CFCFCF",
+		            "border-bottom":"none",
+				});
+				$(self).find("li").css({
+					"padding":"5px 10px",
+					"border-bottom":"1px solid #CFCFCF",
+
+				});
+				if (settings.selectText != "" && settings.selectText != undefined) {
+		            $(".selectpick_div_" + item_id + " span").text(settings.selectText);
+		        } else {
+		            $(".selectpick_div_" + item_id + " span").text($(self).children("li").first().text());
+		        };
+		        $('.selectpick_div_'+item_id).click(function(){
+		        	$(self).slideToggle("fast");
+		        });
+				$(self).find("li").bind("click", function() {
+                  $(".selectpick_span_" + item_id).text($(this).text());
+                  $(this).addClass("selected").siblings().removeClass("selected");
+                  $("#" + item_id).hide();
+                  if (settings.onSelect != undefined && settings.onSelect != "" && typeof settings.onSelect == "function") {
+                     settings.onSelect($(this).val(), $(this).text());
+                  }
+               });
+			});
+		}
+	})(jQuery,window,document);
+
+	$(function() {
+		$("#select1").selectpicker({selectText:"selectitem3",onSelect:function(value,text){alert("这是回调函数，选中的值："+value+" \n选中的下拉框文本："+text);}});
+	});
+	</script>
+</body>
+</html>
